@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule Maker</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container {
+        width: 80%;
+        max-width: 600px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f0f0f0;
+    }
+    input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Schedule Maker</h1>
+    <table>
+        <tr>
+            <th></th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+        </tr>
+        <tr>
+            <td>Morning</td>
+            <td><input type="text" name="mon-morning"></td>
+            <td><input type="text" name="tue-morning"></td>
+            <td><input type="text" name="wed-morning"></td>
+            <td><input type="text" name="thu-morning"></td>
+            <td><input type="text" name="fri-morning"></td>
+            <td><input type="text" name="sat-morning"></td>
+            <td><input type="text" name="sun-morning"></td>
+        </tr>
+        <!-- Add rows for other times like Afternoon, Evening, Night -->
+    </table>
+    <button onclick="exportSchedule()">Export Schedule</button>
+</div>
+<script>
+    function exportSchedule() {
+        const scheduleTable = document.querySelector('table');
+        const scheduleImage = document.createElement('canvas');
+        scheduleImage.width = scheduleTable.offsetWidth;
+        scheduleImage.height = scheduleTable.offsetHeight;
+        const ctx = scheduleImage.getContext('2d');
+        ctx.fillStyle = '#fff'; // Background color
+        ctx.fillRect(0, 0, scheduleImage.width, scheduleImage.height);
+        const img = new Image();
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            const url = scheduleImage.toDataURL();
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'schedule.png';
+            a.click();
+        }
+        img.src = 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(scheduleTable));
+    }
+</script>
+</body>
+</html>
